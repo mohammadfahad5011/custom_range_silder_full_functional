@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background: #000;
+      }
+      /* Range slider container */
+      .slider {
+        width: 300px;
+        height: 10px;
+        background-color: red;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      /* Range slider thumb */
+      .slider-thumb {
+        width: 8px;
+        height: 20px;
+        background-color: white;
+        position: absolute;
+        top: -5px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      /* Range slider filled track */
+      .slider-track {
+        width: 30%;
+        height: 10px;
+        background-color: green;
+        position: absolute;
+        top: 0;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider">
+      <div class="slider-thumb"></div>
+      <div class="slider-track"></div>
+    </div>
+
+    <script>
+      var thumb = document.querySelector(".slider-thumb");
+      var track = document.querySelector(".slider-track");
+      var slider = document.querySelector(".slider");
+
+      // Set initial value to 30%
+      var initialValue = 30;
+
+      // Calculate initial position based on the initial value
+      var initialPosition = (initialValue / 100) * slider.offsetWidth;
+      thumb.style.left = initialPosition + "px";
+      track.style.width = initialPosition + "px";
+
+      thumb.addEventListener("mousedown", function (event) {
+        event.preventDefault();
+
+        window.addEventListener("mousemove", moveThumb);
+        window.addEventListener("mouseup", stopThumb);
+      });
+
+      function moveThumb(event) {
+        var rect = slider.getBoundingClientRect();
+        var x = event.clientX - rect.left;
+        var percentage = (x / slider.offsetWidth) * 100;
+
+        if (percentage < 0) {
+          percentage = 0;
+        } else if (percentage > 100) {
+          percentage = 100;
+        }
+
+        thumb.style.left = percentage + "%";
+        track.style.width = percentage + "%";
+      }
+
+      function stopThumb() {
+        window.removeEventListener("mousemove", moveThumb);
+        window.removeEventListener("mouseup", stopThumb);
+      }
+    </script>
+  </body>
+</html>
